@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="images/zts-favicon.png">
+<title>Team Zottl — Powerlifting & Strength Coaching</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black: #0E0D11;
+    --black-2: #16141B;
+    --black-3: #1E1B24;
+    --purple: #6B2FA6;
+    --purple-deep: #4A1F75;
+    --purple-bright: #9B5CDB;
+    --yellow: #F4C430;
+    --yellow-dim: #C9A227;
+    --bone: #F2EFE9;
+    --gray: #8B8794;
+    --gray-dim: #5C5965;
+    --line: rgba(242,239,233,0.1);
+
+    --display: 'Archivo Black', 'Archivo', sans-serif;
+    --body: 'Archivo', -apple-system, sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--black);
+    color:var(--bone);
+    font-family:var(--body);
+    font-weight:400;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+
+  ::selection{ background:var(--purple); color:var(--bone); }
+
+  a{ color:inherit; text-decoration:none; }
+
+  img{ max-width:100%; display:block; }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- texture / atmosphere ---------- */
+  .grain{
+    position:fixed; inset:0;
+    pointer-events:none;
+    z-index:2;
+    opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0;
+    z-index:50;
+    background:rgba(14,13,17,0.78);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    height:76px;
+  }
+  .nav-mark{
+    display:flex; align-items:center;
+  }
+  .nav-links{
+    display:flex; gap:36px; align-items:center;
+    font-size:14px; font-weight:600;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+  }
+  .nav-links a{
+    color:var(--gray);
+    transition:color 0.2s ease;
+    position:relative;
+    padding:4px 0;
+  }
+  .nav-links a:hover, .nav-links a:focus-visible{ color:var(--bone); }
+  .nav-links a::after{
+    content:'';
+    position:absolute; left:0; bottom:-2px;
+    height:2px; width:0;
+    background:var(--yellow);
+    transition:width 0.25s ease;
+  }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-cta{
+    background:var(--yellow);
+    color:var(--black);
+    padding:10px 22px;
+    border-radius:3px;
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    transition:transform 0.2s ease, background 0.2s ease;
+  }
+  .nav-cta:hover{ background:#ffd84d; transform:translateY(-1px); }
+  .nav-cta-mobile{ display:none; }
+  .nav-toggle{ display:none; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding-top:140px; padding-bottom:80px;
+    background:
+      radial-gradient(ellipse 900px 600px at 18% -10%, rgba(107,47,166,0.45), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(244,196,48,0.10), transparent 60%),
+      var(--black);
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    -webkit-mask-image:linear-gradient(to bottom, transparent, rgba(0,0,0,0.6) 30%, transparent 85%);
+    mask-image:linear-gradient(to bottom, transparent, rgba(0,0,0,0.6) 30%, transparent 85%);
+    opacity:0.5;
+  }
+
+  .hero-title{
+    position:relative; z-index:2;
+    font-family:var(--display);
+    font-size:clamp(34px, 6.2vw, 76px);
+    line-height:1.05;
+    letter-spacing:-0.01em;
+    max-width:900px;
+  }
+  .hero-title .line2{ color:var(--purple-bright); }
+
+  .hero-sub{
+    position:relative; z-index:2;
+    margin-top:28px;
+    max-width:560px;
+    font-size:18px;
+    color:var(--gray);
+    line-height:1.65;
+  }
+  .hero-sub strong{ color:var(--bone); font-weight:700; }
+
+  .hero-ctas{
+    position:relative; z-index:2;
+    margin-top:40px;
+    display:flex; gap:16px; flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:16px 30px;
+    font-weight:800;
+    font-size:14px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    border-radius:3px;
+    transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    cursor:pointer;
+    border:1px solid transparent;
+  }
+  .btn-primary{ background:var(--yellow); color:var(--black); }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 10px 30px -8px rgba(244,196,48,0.5); }
+  .btn-ghost{ border-color:var(--line); color:var(--bone); background:rgba(255,255,255,0.02); }
+  .btn-ghost:hover{ border-color:var(--purple-bright); background:rgba(107,47,166,0.12); }
+
+  .hero-credit{
+    position:relative; z-index:2;
+    margin-top:64px;
+    font-size:12px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--gray-dim);
+    display:flex; align-items:center; gap:14px;
+  }
+  .hero-credit .rule{ width:40px; height:1px; background:var(--gray-dim); }
+
+  /* ---------- section scaffolding ---------- */
+  section{ position:relative; padding:120px 0; }
+  .eyebrow{
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--yellow);
+    margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{ content:''; width:24px; height:2px; background:var(--yellow); }
+  h2.section-title{
+    font-family:var(--display);
+    font-size:clamp(34px, 4.5vw, 56px);
+    line-height:1.02;
+    max-width:680px;
+    letter-spacing:-0.01em;
+  }
+  .section-desc{
+    margin-top:20px;
+    max-width:520px;
+    color:var(--gray);
+    font-size:16px;
+    line-height:1.7;
+  }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:40px; flex-wrap:wrap;
+    margin-bottom:64px;
+  }
+
+  /* ---------- bios ---------- */
+  .bios{ background:var(--black-2); }
+  .bio-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:2px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .bio-card{
+    background:var(--black-2);
+    padding:48px 40px;
+    position:relative;
+  }
+  .bio-photo{
+    width:100%;
+    aspect-ratio:4/5;
+    border-radius:4px;
+    margin-bottom:28px;
+    background:linear-gradient(150deg, var(--purple-deep), var(--black-3) 70%);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .bio-photo.yellow-tone{ background:linear-gradient(150deg, #5c4a12, var(--black-3) 70%); }
+  .bio-photo span{
+    font-family:var(--display);
+    font-size:13px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:rgba(242,239,233,0.35);
+  }
+  .bio-photo::after{
+    content:'';
+    position:absolute; inset:0;
+    background:repeating-linear-gradient(135deg, transparent, transparent 18px, rgba(255,255,255,0.025) 18px, rgba(255,255,255,0.025) 19px);
+  }
+  .bio-name{
+    font-family:var(--display);
+    font-size:30px;
+    margin-bottom:4px;
+  }
+  .bio-role{
+    color:var(--yellow);
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .bio-ig{
+    display:inline-flex; align-items:center; gap:7px;
+    color:var(--gray);
+    font-size:13.5px;
+    font-weight:600;
+    margin-bottom:22px;
+    transition:color 0.2s ease;
+  }
+  .bio-ig svg{ width:16px; height:16px; flex-shrink:0; }
+  .bio-ig:hover{ color:var(--purple-bright); }
+  .bio-stats{
+    display:flex; gap:28px;
+    margin-bottom:22px;
+    padding-bottom:22px;
+    border-bottom:1px solid var(--line);
+  }
+  .bio-stat b{
+    display:block;
+    font-family:var(--display);
+    font-size:22px;
+    color:var(--bone);
+  }
+  .bio-stat span{
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--gray);
+  }
+  .bio-text{
+    color:var(--gray);
+    font-size:15px;
+    line-height:1.75;
+  }
+  .bio-text strong{ color:var(--bone); }
+
+  @media (max-width:860px){
+    .bio-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- coach highlights ---------- */
+  .coach-highlights{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:2px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    margin-top:24px;
+  }
+  .highlight-item{
+    background:var(--black-2);
+    padding:28px 20px;
+    text-align:center;
+    display:flex; flex-direction:column; gap:8px; align-items:center;
+  }
+  .highlight-item b{
+    font-family:var(--display);
+    font-size:30px;
+    color:var(--yellow);
+    line-height:1;
+  }
+  .highlight-item span{
+    font-size:12.5px;
+    letter-spacing:0.04em;
+    color:var(--gray);
+    line-height:1.4;
+  }
+  @media (max-width:760px){
+    .coach-highlights{ grid-template-columns:repeat(2, 1fr); }
+  }
+
+  /* ---------- philosophy block ---------- */
+  .philosophy-block{
+    margin-top:64px;
+    background:linear-gradient(155deg, rgba(107,47,166,0.16), var(--black-2) 65%);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:56px;
+  }
+  .philosophy-title{
+    font-family:var(--display);
+    font-size:clamp(26px, 3.4vw, 38px);
+    max-width:560px;
+    margin-bottom:36px;
+    line-height:1.1;
+  }
+  .philosophy-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:32px;
+  }
+  .philosophy-item{
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .philosophy-num{
+    font-family:var(--display);
+    font-size:15px;
+    color:var(--purple-bright);
+    letter-spacing:0.06em;
+  }
+  .philosophy-text{
+    font-size:15px;
+    color:var(--gray);
+    line-height:1.65;
+  }
+  .philosophy-text strong{ color:var(--bone); }
+  @media (max-width:760px){
+    .philosophy-block{ padding:36px 24px; }
+    .philosophy-grid{ grid-template-columns:1fr; gap:24px; }
+  }
+
+  /* ---------- pricing ---------- */
+  .pricing{ background:var(--black); }
+  .pricing-toggle{
+    display:inline-flex;
+    border:1px solid var(--line);
+    border-radius:30px;
+    padding:4px;
+    margin-bottom:8px;
+  }
+  .pricing-toggle button{
+    border:none; background:none; cursor:pointer;
+    padding:10px 22px;
+    font-family:var(--body);
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--gray);
+    border-radius:24px;
+    transition:all 0.25s ease;
+  }
+  .pricing-toggle button.active{
+    background:var(--purple);
+    color:var(--bone);
+  }
+
+  .plans{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+    margin-top:56px;
+  }
+  .plan{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:40px 32px;
+    background:var(--black-2);
+    display:flex; flex-direction:column;
+    position:relative;
+    transition:border-color 0.25s ease, transform 0.25s ease;
+  }
+  .plan:hover{ transform:translateY(-4px); border-color:rgba(155,92,219,0.4); }
+  .plan.featured{
+    background:linear-gradient(165deg, rgba(107,47,166,0.18), var(--black-2) 60%);
+    border-color:var(--purple-bright);
+  }
+  .plan-tag{
+    position:absolute; top:-13px; left:32px;
+    background:var(--yellow);
+    color:var(--black);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:5px 14px;
+    border-radius:20px;
+  }
+  .plan-attempt{
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gray-dim);
+    margin-bottom:14px;
+    font-weight:700;
+  }
+  .plan-name{
+    font-family:var(--display);
+    font-size:24px;
+    margin-bottom:10px;
+  }
+  .plan-price{
+    display:flex; align-items:baseline; gap:6px;
+    margin:18px 0 6px;
+  }
+  .plan-price b{
+    font-family:var(--display);
+    font-size:46px;
+    color:var(--bone);
+  }
+  .plan-price span{
+    color:var(--gray);
+    font-size:14px;
+  }
+  .plan-billed{
+    font-size:13px;
+    color:var(--gray-dim);
+    margin-bottom:28px;
+  }
+  .plan-features{
+    list-style:none;
+    display:flex; flex-direction:column; gap:13px;
+    margin-bottom:32px;
+    flex:1;
+  }
+  .plan-features li{
+    display:flex; gap:10px;
+    font-size:14.5px;
+    color:var(--gray);
+    line-height:1.5;
+  }
+  .plan-features li::before{
+    content:'';
+    flex-shrink:0;
+    width:16px; height:16px;
+    margin-top:3px;
+    background:var(--purple-bright);
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/contain no-repeat;
+    mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/contain no-repeat;
+  }
+  .plan-cta{
+    width:100%;
+    text-align:center;
+    padding:15px;
+    border-radius:4px;
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--line);
+    color:var(--bone);
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .plan.featured .plan-cta{
+    background:var(--yellow);
+    color:var(--black);
+    border-color:var(--yellow);
+  }
+  .plan-cta:hover{ filter:brightness(1.12); transform:translateY(-1px); }
+
+  .pricing-note{
+    margin-top:36px;
+    font-size:13px;
+    color:var(--gray-dim);
+    max-width:640px;
+    line-height:1.6;
+  }
+
+  @media (max-width:900px){
+    .plans{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- affiliates ---------- */
+  .affiliates{ background:var(--black-2); }
+  .aff-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+    margin-top:56px;
+  }
+  .aff-card{
+    border:1px solid var(--line);
+    background:var(--black-3);
+    border-radius:6px;
+    padding:30px 28px;
+    display:flex; flex-direction:column; gap:14px;
+    transition:border-color 0.2s ease, transform 0.2s ease;
+  }
+  .aff-card:hover{ border-color:var(--yellow); transform:translateY(-3px); }
+  .aff-icon{
+    width:42px; height:42px;
+    border-radius:50%;
+    background:var(--purple);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--display);
+    font-size:15px;
+    color:var(--bone);
+  }
+  .aff-name{ font-weight:800; font-size:17px; }
+  .aff-desc{ font-size:14px; color:var(--gray); line-height:1.6; flex:1; }
+  .aff-link{
+    font-size:13px; font-weight:700;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--yellow);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .aff-link svg{ width:13px; height:13px; transition:transform 0.2s ease; }
+  .aff-card:hover .aff-link svg{ transform:translate(2px,-2px); }
+
+  @media (max-width:900px){
+    .aff-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- cta band ---------- */
+  .cta-band{
+    background:linear-gradient(120deg, var(--purple-deep), var(--purple) 55%, #3a1860);
+    padding:0;
+    position:relative;
+    overflow:hidden;
+  }
+  .cta-band::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:radial-gradient(circle, rgba(244,196,48,0.18) 1.5px, transparent 1.5px);
+    background-size:26px 26px;
+    opacity:0.4;
+  }
+  .cta-band-inner{
+    position:relative; z-index:2;
+    display:grid;
+    grid-template-columns:0.85fr 1fr;
+    align-items:center;
+    gap:0;
+    min-height:480px;
+  }
+  .cta-photo-col{
+    height:100%;
+    align-self:stretch;
+    position:relative;
+    min-height:480px;
+  }
+  .cta-photo-col img{
+    width:100%; height:100%;
+    object-fit:cover;
+    object-position:center 30%;
+    filter:grayscale(1) contrast(1.05);
+  }
+  .cta-photo-col::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(90deg, transparent 60%, var(--purple) 100%);
+    opacity:0.85;
+  }
+  .cta-text-col{
+    padding:70px 64px 70px 56px;
+    text-align:left;
+  }
+  .cta-band h2{
+    font-family:var(--display);
+    font-size:clamp(28px, 4vw, 46px);
+    margin-bottom:16px;
+    line-height:1.08;
+  }
+  .cta-band p{
+    color:rgba(242,239,233,0.8);
+    max-width:420px;
+    margin:0 0 32px;
+    font-size:16px;
+  }
+  .cta-credit{
+    margin-top:28px;
+    font-size:12.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:rgba(242,239,233,0.55);
+  }
+
+  .contact-form{
+    max-width:420px;
+  }
+  .form-row{
+    margin-bottom:16px;
+    text-align:left;
+  }
+  .form-row label{
+    display:block;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:rgba(242,239,233,0.75);
+    margin-bottom:6px;
+  }
+  .form-row input,
+  .form-row textarea{
+    width:100%;
+    padding:12px 14px;
+    background:rgba(0,0,0,0.22);
+    border:1px solid rgba(242,239,233,0.25);
+    border-radius:4px;
+    color:var(--bone);
+    font-family:var(--body);
+    font-size:15px;
+    transition:border-color 0.2s ease, background 0.2s ease;
+  }
+  .form-row input::placeholder,
+  .form-row textarea::placeholder{
+    color:rgba(242,239,233,0.4);
+  }
+  .form-row input:focus,
+  .form-row textarea:focus{
+    outline:none;
+    border-color:var(--yellow);
+    background:rgba(0,0,0,0.32);
+  }
+  .form-row textarea{ resize:vertical; min-height:90px; }
+  .contact-form .btn{ margin-top:4px; }
+  .form-status{
+    margin-top:14px;
+    font-size:13.5px;
+    color:rgba(242,239,233,0.8);
+    min-height:18px;
+  }
+  .form-status.error{ color:#ffb4b4; }
+  .form-status.success{ color:var(--yellow); }
+
+  @media (max-width:780px){
+    .cta-band-inner{ grid-template-columns:1fr; }
+    .cta-photo-col{ min-height:320px; }
+    .cta-photo-col::after{ background:linear-gradient(0deg, var(--purple) 5%, transparent 40%); }
+    .cta-text-col{ padding:48px 28px; text-align:center; }
+    .cta-band p{ margin-left:auto; margin-right:auto; }
+    .contact-form{ max-width:none; text-align:left; margin:0 auto; }
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    background:var(--black);
+    padding:64px 0 32px;
+    border-top:1px solid var(--line);
+  }
+  .footer-top{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:40px;
+    margin-bottom:48px;
+  }
+  .footer-mark{
+    font-family:var(--display);
+    font-size:22px;
+  }
+  .footer-mark .accent{ color:var(--yellow); }
+  .footer-tag{ color:var(--gray-dim); font-size:14px; margin-top:10px; max-width:280px; }
+  .footer-cols{ display:flex; gap:64px; flex-wrap:wrap; }
+  .footer-col h4{
+    font-size:12px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--gray-dim);
+    margin-bottom:16px;
+  }
+  .footer-col a{
+    display:block;
+    color:var(--gray);
+    font-size:14px;
+    margin-bottom:10px;
+    transition:color 0.2s ease;
+  }
+  .footer-col a:hover{ color:var(--yellow); }
+  .footer-bottom{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    padding-top:28px;
+    border-top:1px solid var(--line);
+    font-size:12.5px;
+    color:var(--gray-dim);
+  }
+
+  /* ---------- mobile nav ---------- */
+  @media (max-width:780px){
+    .nav-links{
+      position:fixed; top:76px; left:0; right:0;
+      background:var(--black-2);
+      flex-direction:column;
+      align-items:flex-start;
+      padding:24px 32px;
+      gap:20px;
+      border-bottom:1px solid var(--line);
+      transform:translateY(-130%);
+      transition:transform 0.3s ease;
+    }
+    .nav-links.open{ transform:translateY(0); }
+    .nav-cta{ display:none; }
+    .nav-links .nav-cta-mobile{
+      display:inline-flex;
+      background:var(--yellow); color:var(--black);
+      padding:10px 22px; border-radius:3px;
+    }
+    .nav-toggle{
+      display:flex; flex-direction:column; gap:5px;
+      background:none; border:none; cursor:pointer;
+      padding:8px;
+    }
+    .nav-toggle span{ width:22px; height:2px; background:var(--bone); }
+  }
+
+  @media (max-width:600px){
+    .wrap{ padding:0 20px; }
+    section{ padding:80px 0; }
+    .hero{ padding-top:120px; }
+  }
+
+  /* reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--yellow);
+    outline-offset:3px;
+  }
+
+  /* reveal on scroll */
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header>
+  <div class="wrap nav-inner">
+    <a href="#top" class="nav-mark"><img src="images/zts-logo-nav.png" alt="Team Zottl" style="height:48px;width:auto;display:block;"></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#bios">Coaches</a>
+      <a href="#pricing">Coaching</a>
+      <a href="#affiliates">Partners</a>
+      <a href="#contact">Contact</a>
+      <a href="#pricing" class="nav-cta-mobile">Start Coaching</a>
+    </nav>
+    <a href="#pricing" class="nav-cta">Start Coaching</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="hero-title">
+        Coached by Canada's <span class="line2">strongest.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Team Zottl is online and in-person coaching from <strong>Justin & Helene Zottl</strong> — built on the same standards that put a Canadian record on the platform. Whether you're chasing a competition total or just trying to lose weight, move better, and feel strong again, no fluff, no guesswork — just a program built around you.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="#pricing" class="btn btn-primary">View Coaching Packages</a>
+        <a href="#bios" class="btn btn-ghost">Meet The Coaches</a>
+      </div>
+
+      <div class="hero-credit">
+        <span class="rule"></span>
+        Based in Niagara, Ontario — coaching lifters everywhere
+      </div>
+    </div>
+  </section>
+
+  <!-- BIOS -->
+  <section class="bios" id="bios">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">The Coaches</div>
+          <h2 class="section-title">Two lifters who've actually been on the platform.</h2>
+        </div>
+        <p class="section-desc" style="max-width:620px;">No theory-only coaching here. Every program is built from what's actually worked — for competitive lifters chasing a total, and just as much for people who've never stepped on a platform and don't plan to. Justin and Helene have spent over a decade competing at the highest levels of their disciplines, but most of the people they coach are just trying to lose weight, move better, build real strength, and take control of their health. That experience under real competition pressure shapes every program, whether the goal is a national qualifying total or simply feeling stronger and more capable day to day. Whatever brought you in the door, the approach is the same: technique first, consistency second, and a coach who's actually done the work themselves.</p>
+      </div>
+
+      <div class="bio-grid reveal">
+        <div class="bio-card">
+          <div class="bio-photo"><img src="images/justin-bio.jpg" alt="Justin Zottl carrying the Canadian flag at a powerlifting meet" style="width:100%;height:100%;object-fit:cover;object-position:center 25%;"></div>
+          <div class="bio-name">Justin Zottl</div>
+          <div class="bio-role">Head Coach · Founder</div>
+          <a href="https://www.instagram.com/fullzottl/" target="_blank" rel="noopener" class="bio-ig">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @fullzottl
+          </a>
+          <div class="bio-stats">
+            <div class="bio-stat"><b>#1</b><span>All-Time CAN Total</span></div>
+            <div class="bio-stat"><b>#29</b><span>All-Time World, Raw</span></div>
+            <div class="bio-stat"><b>2,309lb</b><span>Raw Total</span></div>
+          </div>
+          <p class="bio-text">
+            Holder of the heaviest raw total in Canadian powerlifting history — and ranked <strong>#29 all-time in the world</strong>, raw, across every weight class. Justin's career started early: <strong>WPC World Junior Champion in 2016</strong>, before going on to break the Canadian record as a senior lifter. His coaching philosophy is built on a simple idea: <strong>standards matter more than hype.</strong> From a national champion cyclist to the top of the world rankings, his approach centers on technical precision, patient progression, and treating recovery as seriously as the lifts themselves.
+          </p>
+          <p class="bio-text" style="margin-top:16px;">
+            Justin coaches the way he competes — methodically. Every lifter starts with an honest assessment: where you are, where the weak points actually are, and what's realistic in the timeline you've got. He's spent over a decade on the platform himself, which means programming decisions come from lived experience under the bar, not just theory. Whether the goal is a first meet or a national qualifying total, the process doesn't change: build the base, fix what's breaking down first, and let the numbers follow the work.
+          </p>
+        </div>
+
+        <div class="bio-card">
+          <div class="bio-photo yellow-tone"><img src="images/helene-bio.jpg" alt="Helene Zottl squatting at a powerlifting competition" style="width:100%;height:100%;object-fit:cover;object-position:center 15%;"></div>
+          <div class="bio-name">Helene Zottl</div>
+          <div class="bio-role">Coach · Co-Founder</div>
+          <a href="https://www.instagram.com/queenofmean_/" target="_blank" rel="noopener" class="bio-ig">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @queenofmean_
+          </a>
+          <div class="bio-stats">
+            <div class="bio-stat"><b>1,107.9lb</b><span>Raw Total · 82.5kg</span></div>
+            <div class="bio-stat"><b>Elite</b><span>Bench Press</span></div>
+            <div class="bio-stat"><b>Physique</b><span>Competitor</span></div>
+          </div>
+          <p class="bio-text">
+            A competitive powerlifter with an elite-level bench press and a 1,107.9lb raw total in the 82.5kg class, Helene has also competed on the bodybuilding stage in physique. Her own transformation — a real weight loss journey that reshaped how she trains and coaches — is part of what makes her approach different. She co-founded Team Zottl to bring that same standard of coaching to lifters at every level, not just the platform-tested: technique first, confidence second, numbers third.
+          </p>
+          <p class="bio-text" style="margin-top:16px;">
+            Helene's own path — through physique competition, real body transformation, and into elite powerlifting — gives her a different lens on coaching than someone who's only ever known one discipline. She understands what it's like to start over, to rebuild a relationship with training, and to chase a number on the platform while juggling everything else life throws at you. That experience shapes how she coaches: direct, encouraging, and genuinely invested in the person behind the lifts, not just the totals.
+          </p>
+        </div>
+      </div>
+
+      <div class="coach-highlights reveal">
+        <div class="highlight-item">
+          <b>22+</b>
+          <span>Combined Meets Competed</span>
+        </div>
+        <div class="highlight-item">
+          <b>10+</b>
+          <span>Years On The Platform</span>
+        </div>
+        <div class="highlight-item">
+          <b>500kg+</b>
+          <span>Multiple Women's Totals Coached</span>
+        </div>
+        <div class="highlight-item">
+          <b>2,000lb+</b>
+          <span>Multiple Men's Totals Coached</span>
+        </div>
+        <div class="highlight-item">
+          <b>Pro Card</b>
+          <span>Athletes Coached To Pro Status — Strongman & Powerlifting</span>
+        </div>
+        <div class="highlight-item">
+          <b>All Levels</b>
+          <span>From First-Time Gym-Goers To Pro Status</span>
+        </div>
+      </div>
+
+      <div class="philosophy-block reveal">
+        <div class="philosophy-inner">
+          <div class="eyebrow">Our Approach</div>
+          <h3 class="philosophy-title">Coaching is the work, not the workout.</h3>
+          <div class="philosophy-grid">
+            <div class="philosophy-item">
+              <div class="philosophy-num">01</div>
+              <div class="philosophy-text"><strong>Technique first.</strong> No amount of weight on the bar fixes a pattern that's breaking down. We build the movement before we load it.</div>
+            </div>
+            <div class="philosophy-item">
+              <div class="philosophy-num">02</div>
+              <div class="philosophy-text"><strong>Programming for the person.</strong> Limitations, injury history, schedule, and recovery capacity all shape the plan — not just the goal number.</div>
+            </div>
+            <div class="philosophy-item">
+              <div class="philosophy-num">03</div>
+              <div class="philosophy-text"><strong>Standards over hype.</strong> We've coached first-timers and national record holders with the exact same level of attention and accountability.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+
+      <!-- Online Coaching -->
+      <div class="section-head reveal" style="max-width:none;">
+        <div style="max-width:760px;">
+          <div class="eyebrow">Online Coaching</div>
+          <h2 class="section-title" style="max-width:none;">Pick your commitment. We'll handle the program.</h2>
+          <p class="section-desc" style="max-width:680px;">
+            Remote coaching from Justin & Helene — built around fast feedback, not generic templates. Submit your training videos and get real form corrections back quickly, not days later when the window to fix it has passed. Every program is adjusted to your actual limitations, injury history, and goals — what works for one lifter's hips, schedule, or recovery capacity isn't going to be copy-pasted onto yours.
+          </p>
+          <p class="section-desc" style="max-width:680px; margin-top:14px;">
+            We've coached people who walked into a gym for the first time in their lives, right alongside elite competitive athletes — and everyone in between. That includes <strong>Maxime Boudreault</strong>, who placed 5th at World's Strongest Man under our coaching; <strong>Makenzy Canham</strong>, 3x Canada's Strongest Teen; and <strong>Sam Belliveau</strong>, who won two of her Canada's Strongest Woman titles during our coaching. Beginner or competitive, the standard doesn't change: technique first, programming that respects where you actually are, and a coach who's watching your lifts, not just sending you a spreadsheet.
+          </p>
+        </div>
+      </div>
+
+      <div class="plans reveal">
+
+        <div class="plan" data-plan="monthly">
+          <div class="plan-attempt">Opener</div>
+          <div class="plan-name">Monthly Coaching</div>
+          <div class="plan-price"><b>$250</b><span>CAD / month</span></div>
+          <div class="plan-billed">Billed monthly · cancel anytime</div>
+          <ul class="plan-features">
+            <li>Custom program updated every training block</li>
+            <li>Form check on submitted videos</li>
+            <li>Direct messaging with your coach</li>
+            <li>Month-to-month, no lock-in</li>
+          </ul>
+          <a href="#" class="plan-cta stripe-checkout" data-price="price_1TkWE4HNfDPuCCF4jLWERoTT">Start Monthly</a>
+        </div>
+
+        <div class="plan featured" data-plan="six">
+          <div class="plan-tag">Save 10%</div>
+          <div class="plan-attempt">Second Attempt</div>
+          <div class="plan-name">6-Month Prepaid</div>
+          <div class="plan-price"><b>$225</b><span>CAD / month</span></div>
+          <div class="plan-billed">One-time payment of $1,350 CAD</div>
+          <ul class="plan-features">
+            <li>Everything in Monthly Coaching</li>
+            <li>10% off the monthly rate</li>
+            <li>Full block periodization — meet prep or a structured strength block</li>
+            <li>Priority video review turnaround</li>
+          </ul>
+          <a href="#" class="plan-cta stripe-checkout" data-price="price_1TkWFQHNfDPuCCF4DWwFa7Sv">Start 6-Month Plan</a>
+        </div>
+
+        <div class="plan" data-plan="annual">
+          <div class="plan-tag">Save 20%</div>
+          <div class="plan-attempt">Third Attempt</div>
+          <div class="plan-name">Annual Prepaid</div>
+          <div class="plan-price"><b>$200</b><span>CAD / month</span></div>
+          <div class="plan-billed">One-time payment of $2,400 CAD</div>
+          <ul class="plan-features">
+            <li>Everything in the 6-Month Plan</li>
+            <li>20% off the monthly rate</li>
+            <li>Full season + off-season periodization</li>
+            <li>Two competition meet preps, or ongoing strength & health blocks</li>
+          </ul>
+          <a href="#" class="plan-cta stripe-checkout" data-price="price_1TkWG5HNfDPuCCF4jTUDutWB">Start Annual Plan</a>
+        </div>
+
+      </div>
+
+      <p class="pricing-note">
+        Online coaching is billed in CAD through Stripe. Monthly Coaching is a recurring subscription — update payment details or cancel anytime from your customer portal. The 6-Month and Annual plans are one-time payments with no auto-renewal.
+      </p>
+
+      <!-- In-Person Training -->
+      <div class="section-head reveal" style="margin-top:100px;">
+        <div>
+          <div class="eyebrow">In-Person Training</div>
+          <h2 class="section-title">Train with us at Just Be Strong, Niagara Falls.</h2>
+          <p class="section-desc">One-on-one sessions on the floor with Justin or Helene — hands-on coaching, real-time cues, no guesswork.</p>
+        </div>
+      </div>
+
+      <div class="plans reveal" style="grid-template-columns:repeat(2, 1fr); max-width:780px;">
+
+        <div class="plan" data-plan="single-session">
+          <div class="plan-attempt">Drop-In</div>
+          <div class="plan-name">Single Session</div>
+          <div class="plan-price"><b>$100</b><span>CAD / session</span></div>
+          <div class="plan-billed">Pay per visit, no commitment</div>
+          <ul class="plan-features">
+            <li>1-on-1 in-person coaching</li>
+            <li>Just Be Strong Gym, Niagara Falls</li>
+            <li>Book as you go</li>
+          </ul>
+          <a href="#" class="plan-cta stripe-checkout" data-price="price_1TkWHEHNfDPuCCF4V2s5YFyo">Book a Session</a>
+        </div>
+
+        <div class="plan featured" data-plan="ten-pack">
+          <div class="plan-tag">Best Value</div>
+          <div class="plan-attempt">10-Pack</div>
+          <div class="plan-name">Ten Sessions</div>
+          <div class="plan-price"><b>$800</b><span>CAD / pack</span></div>
+          <div class="plan-billed">$80 CAD per session · save $200 vs. drop-in</div>
+          <ul class="plan-features">
+            <li>1-on-1 in-person coaching</li>
+            <li>Just Be Strong Gym, Niagara Falls</li>
+            <li>10 sessions, use anytime</li>
+          </ul>
+          <a href="#" class="plan-cta stripe-checkout" data-price="price_1TkWISHNfDPuCCF4H3QK5Tzw">Buy 10-Pack</a>
+        </div>
+
+      </div>
+
+      <p class="pricing-note">
+        In-person training takes place at <a href="https://www.justbestrong.ca" target="_blank" rel="noopener" style="color:var(--yellow);">Just Be Strong Gym</a>, Niagara Falls, ON. Session packs are one-time payments processed through Stripe — no recurring charge.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- AFFILIATES -->
+  <section class="affiliates" id="affiliates">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">Our Partners</div>
+          <h2 class="section-title">Businesses we trust and train with.</h2>
+        </div>
+      </div>
+
+      <div class="aff-grid reveal">
+        <div class="aff-card">
+          <div class="aff-icon">JB</div>
+          <div class="aff-name">Just Be Strong Gym</div>
+          <p class="aff-desc">Our home gym in Niagara Falls, ON — open floor training, Special Olympics powerlifting program, and the team's day-to-day training base.</p>
+          <a href="https://www.justbestrong.ca" target="_blank" rel="noopener" class="aff-link">Visit site
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+        <div class="aff-card">
+          <div class="aff-icon">AB</div>
+          <div class="aff-name">The Athletic Buffalo</div>
+          <p class="aff-desc">Team Zottl's RMT of choice. Registered massage therapy with Matt Aubin — recovery and treatment for athletes, built around the demands of training and competing.</p>
+          <a href="https://mtraubin.janeapp.com/" target="_blank" rel="noopener" class="aff-link">Book online
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+        <div class="aff-card">
+          <div class="aff-icon">NL</div>
+          <div class="aff-name">Next Level Strength</div>
+          <p class="aff-desc">Justin is a sponsored athlete with Next Level Strength — powerlifting gear and apparel. Use code <strong style="color:var(--yellow);">FULLZOTTL10</strong> for a discount.</p>
+          <a href="https://nextlevelstrength.shop/" target="_blank" rel="noopener" class="aff-link">Shop now
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+        <div class="aff-card">
+          <div class="aff-icon">CB</div>
+          <div class="aff-name">CERBERUS Strength</div>
+          <p class="aff-desc">Helene is an affiliate with CERBERUS Strength — belts, sleeves, singlets, and strongman gear. Use code <strong style="color:var(--yellow);">QUEEN10</strong> for a discount.</p>
+          <a href="https://cerberus-strength.ca/" target="_blank" rel="noopener" class="aff-link">Shop now
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+        <div class="aff-card">
+          <div class="aff-icon">+</div>
+          <div class="aff-name">Add Your Partner</div>
+          <p class="aff-desc">This card is a placeholder — send over the name, description, and link for any other business you'd like featured here.</p>
+          <a href="#contact" class="aff-link">Get in touch
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="cta-band" id="contact">
+    <div class="cta-band-inner">
+      <div class="cta-photo-col">
+        <img src="images/couple-cta.jpg" alt="Justin and Helene Zottl together">
+      </div>
+      <div class="cta-text-col">
+        <h2>Ready to get started?</h2>
+        <p>Tell us where you're at and where you want to be — on the platform or off it. We'll build the rest.</p>
+
+        <form id="contactForm" class="contact-form" action="https://formspree.io/f/meebjoew" method="POST">
+          <!-- Honeypot field: invisible to real visitors, catches simple spam bots -->
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+          <div class="form-row">
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" name="name" required autocomplete="name">
+          </div>
+          <div class="form-row">
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" name="email" required autocomplete="email">
+          </div>
+          <div class="form-row">
+            <label for="cf-message">What are you looking for?</label>
+            <textarea id="cf-message" name="message" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="cta-credit">Justin & Helene — Team Zottl</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <img src="images/zts-logo-footer.png" alt="Team Zottl" style="height:64px;width:auto;display:block;margin-bottom:14px;">
+        <p class="footer-tag">Powerlifting & strength coaching from Justin & Helene Zottl. Niagara, Ontario.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Site</h4>
+          <a href="#bios">Coaches</a>
+          <a href="#pricing">Coaching</a>
+          <a href="#affiliates">Partners</a>
+        </div>
+        <div class="footer-col">
+          <h4>Follow</h4>
+          <a href="https://www.instagram.com/teamzottl/" target="_blank" rel="noopener">Team Zottl — @teamzottl</a>
+          <a href="https://www.instagram.com/fullzottl/" target="_blank" rel="noopener">Justin — @fullzottl</a>
+          <a href="https://www.instagram.com/queenofmean_/" target="_blank" rel="noopener">Helene — @queenofmean_</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="#contact">Send a message</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Team Zottl Coaching. All rights reserved.</span>
+      <span>Niagara Falls, Ontario</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', false);
+  }));
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  /* ----------------------------------------------------------------
+     STRIPE CHECKOUT — live wiring.
+     Front-end calls the Netlify Function at /.netlify/functions/create-checkout-session
+     which securely creates a Checkout Session using your Stripe SECRET key
+     (stored only in Netlify's environment variables, never in this file).
+     This page only ever holds the PUBLISHABLE key, which is safe to expose.
+
+     SETUP REQUIRED before this works:
+     1. In Netlify: Site configuration > Environment variables
+        Add STRIPE_SECRET_KEY = your secret key from Stripe Dashboard > Developers > API keys
+     2. Redeploy the site after adding it.
+
+     Currently using a pk_test_... key, meaning Stripe is in TEST MODE —
+     no real charges will be made. Swap in your pk_live_... key (and a
+     matching sk_live_... secret key in Netlify) when ready to accept
+     real payments.
+  ---------------------------------------------------------------- */
+  const STRIPE_PUBLISHABLE_KEY = 'pk_test_51TkVatHNfDPuCCF4xGqEk2qTZ2A0RJFyv1WMUEOjJAuGsw71wu9LBmqifmciXzleSL4WzaLRigrwmPkQB4TgAmnK00G3ZelABY';
+
+  document.querySelectorAll('.stripe-checkout').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const priceId = btn.dataset.price;
+      const originalText = btn.textContent;
+      btn.style.pointerEvents = 'none';
+      btn.textContent = 'Loading...';
+
+      try {
+        const res = await fetch('/.netlify/functions/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ priceId })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.url) {
+          throw new Error(data.error || 'Checkout could not be started.');
+        }
+
+        window.location.href = data.url;
+      } catch (err) {
+        alert('Sorry, something went wrong starting checkout: ' + err.message);
+        btn.style.pointerEvents = '';
+        btn.textContent = originalText;
+      }
+    });
+  });
+
+  /* ----------------------------------------------------------------
+     CONTACT FORM — submits to Formspree without leaving the page.
+     Connected to Formspree form ID: meebjoew
+     Submissions are delivered to the email verified on that
+     Formspree account. Your email is never shown anywhere in this
+     page's code — only the anonymous form ID appears here.
+  ---------------------------------------------------------------- */
+  const contactForm = document.getElementById('contactForm');
+  const formStatus = document.getElementById('formStatus');
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (contactForm.action.includes('REPLACE_WITH_YOUR_FORM_ID')) {
+        formStatus.textContent = 'Form isn\'t connected yet — create a free form at formspree.io and replace the form ID in the code.';
+        formStatus.className = 'form-status error';
+        return;
+      }
+
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      formStatus.textContent = '';
+      formStatus.className = 'form-status';
+
+      try {
+        const res = await fetch(contactForm.action, {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          formStatus.textContent = 'Message sent — we\'ll get back to you soon.';
+          formStatus.className = 'form-status success';
+          contactForm.reset();
+        } else {
+          formStatus.textContent = 'Something went wrong. Please try again.';
+          formStatus.className = 'form-status error';
+        }
+      } catch (err) {
+        formStatus.textContent = 'Something went wrong. Please try again.';
+        formStatus.className = 'form-status error';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
